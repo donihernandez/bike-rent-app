@@ -50,7 +50,7 @@ export default function RentABikePage() {
         if (timeRange.length === 0) {
             fillTimeRangeWithIntervals("8:00", "20:00");
         }
-    }, []);
+    }, [timeRange.length]);
 
 
     return (
