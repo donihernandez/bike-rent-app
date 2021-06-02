@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Route,Redirect } from 'react-router-dom';
 import Layout from "../layout/Layout";
+import {useSelector} from "react-redux";
 
 export default function ProtectedRouteComponent({ component: Component, ...rest }) {
-    const [isAuthenticated, setIsAuthenticated] = useState(true);
+    const isAuthenticated = useSelector(state => state.userReducer.token);
 
     return (
         <Route { ...rest } render={(props) => (

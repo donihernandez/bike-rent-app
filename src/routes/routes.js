@@ -7,7 +7,8 @@ import ProtectedRouteComponent from "../components/ProtectedRouteComponent";
 // Pages
 const HomePage = lazy(() => import('../pages/HomePage'));
 const LoginPage = lazy(() => import('../pages/LoginPage'));
-const RentABikePage = lazy(() => import('../pages/RentABikePage'));
+const RegisterPage = lazy(() => import('../pages/RegisterPage'));
+const RentABikePage = lazy(() => import('../pages/RentPage'));
 const ErrorPage = lazy(() => import('../pages/ErrorPage'));
 
 
@@ -18,7 +19,7 @@ export default function Routes() {
                 <Switch>
                     <ProtectedRouteComponent path="/" exact component={ HomePage }/>
                     <Route path="/login" exact component={ LoginPage }/>
-                    <Route path="/register" exact component={ LoginPage }/>
+                    <Route path="/register" exact component={ RegisterPage }/>
                     <ProtectedRouteComponent path="/rent" exact component={ RentABikePage }/>
                     <Route path="*" component={ ErrorPage }/>
                 </Switch>
