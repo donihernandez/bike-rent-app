@@ -1,16 +1,24 @@
-import React, {useRef, Fragment} from 'react';
-import { Link } from 'react-router-dom';
+import React, {useRef, Fragment, useState, useEffect} from 'react';
+import { Link, Redirect } from 'react-router-dom';
 import { MenuAlt1Icon, XCircleIcon } from "@heroicons/react/outline";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import { logout } from '../store/actions/authAction';
+import Cookies from 'js-cookie';
 
 export default function NavBarComponent() {
 
-    const token = useSelector(state => state.userReducer.token);
+    const [token, setToken] = useState('');
     const navMenu = useRef(null)
+    const [ redirect, setRedirect ] = useState(false);
 
     const dispatch = useDispatch();
     const logoutAction = () => dispatch(logout());
+
+    useEffect(() => {
+        if (token === '') {
+            setToken(Cookies.get('token'));
+        }
+    }, [token])
 
     const showMenu = () => {
         navMenu.current.style.left = '0'
@@ -22,6 +30,11 @@ export default function NavBarComponent() {
 
     const logoutUser = () => {
         logoutAction();
+        setRedirect(true)
+    }
+
+    if (redirect) {
+       return <Redirect to="/" />
     }
 
     return (
@@ -49,7 +62,7 @@ export default function NavBarComponent() {
                                     <Link to="/register">Register</Link>
                                 </li>
                             </Fragment> :
-                            <li onClick={logoutUser} className="uppercase hover:text-green-500 transition ease-out duration-200 delay-200 text-1xl font-bold">
+                            <li onClick={logoutUser} className="uppercase hover:text-green-500  cursor-pointer transition ease-out duration-200 delay-200 text-1xl font-bold">
                                Logout
                             </li>
                     }
@@ -76,7 +89,7 @@ export default function NavBarComponent() {
                                         <Link to="/register">Register</Link>
                                     </li>
                                 </Fragment> :
-                                <li onClick={logoutUser} className="mt-6 mb-10 hover:text-green-500 transition-all ease-out duration-200 delay-300" onClick={hideMenu}>
+                                <li onClick={logoutUser} className="mt-6 cursor-pointer mb-10 hover:text-green-500 transition-all ease-out duration-200 delay-300">
                                     Logout
                                 </li>
                         }

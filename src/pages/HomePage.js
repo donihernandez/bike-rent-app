@@ -2,12 +2,11 @@ import React, {useEffect} from 'react';
 import Motorcycle from '../static/images/Motorcycle.png'
 import Rider from '../static/images/Motorcycle Rider.H03.2k-min.png'
 import {NavLink} from "react-router-dom";
-import { fillTimeRangeWithIntervals } from '../store/actions/ridersAction'
-import {useDispatch, useSelector} from "react-redux";
+import Layout from "../layout/Layout";
 
 export default function HomePage() {
     return (
-        <div>
+        <Layout>
             <section className="h-screen bg-gray-800 text-white p-10 flex flex-col md:flex-row justify-center items-center">
                 <div className="md:w-1/2 md:pl-6 md:pr-4">
                     <h1 className="text-6xl md:text-7xl font-bold pt-0 pb-8">Rent your <span className="text-red-500">Ride</span></h1>
@@ -34,6 +33,6 @@ export default function HomePage() {
                     </p>
                 </div>
             </section>
-        </div>
+        </Layout>
     );
 }

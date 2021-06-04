@@ -55,15 +55,17 @@ export const fillTimeRangeWithIntervals = (from = "8:00", until = "20:00") => {
     }
 }
 
-export const reserveBike = (time, user) => {
-    return function(dispatch) {
+export const reserveBike = (time) => {
+    return async function(dispatch) {
+        console.log(time)
+        const user = await app.auth().currentUser;
         const today = moment().format('DD/MM/YYYY');
         app.firestore().collection('time_ranges')
             .where('current_date', '==', today).limit(1).get()
             .then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
-                     const { list } = doc.data();
-
+                    const { list } = doc.data();
+                    console.log(doc.id)
                     const updatedRange = list.map((item) => {
                         if (item.time === time) {
                             const isSelected = isSelectedByUser(item.selectedBy, user);
@@ -81,9 +83,9 @@ export const reserveBike = (time, user) => {
                                 }
                             }
                             item.availability = item.riders !== 0;
-                            return item;
                         }
-                     });
+                        return item;
+                    });
 
                     dispatch({
                         type: 'UPDATE',
@@ -92,14 +94,14 @@ export const reserveBike = (time, user) => {
 
                     app.firestore().collection('time_ranges')
                         .doc(doc.id).update({
-                            list: updatedRange
+                        "list": updatedRange
                     })
                         .then((docRef) => {
-                        console.log("Document updated: ", docRef.id);
-                    })
+                            console.log("Document updated successfully!");
+                        })
                         .catch((error) => {
-                        console.error("Error updating document: ", error);
-                    });;
+                            console.error("Error updating document: ", error);
+                        });
 
                 })
             }).catch((error) => {
@@ -109,11 +111,7 @@ export const reserveBike = (time, user) => {
 }
 
 const isSelectedByUser = (userList, user) => {
-    return userList.find(item => {
-        if (item === user.email) {
-            return true;
-        }
-    });
+    return userList.find(item => item === user.email);
 }
 
 const addTimeRange = (from, until) => {

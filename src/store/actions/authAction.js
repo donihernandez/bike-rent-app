@@ -4,12 +4,13 @@ import Cookies from 'js-cookie';
 
 export const login = (email, password) => {
     return async function (dispatch) {
-        app.auth().signInWithEmailAndPassword(email, password).then(async (res) => {
+       app.auth().signInWithEmailAndPassword(email, password).then(async (res) => {
             const { user } = res;
             const token = await user.getIdToken()
             const expirationTime = new Date(new Date().getTime() + 180 * 60 * 1000);
 
             Cookies.set('token', token, expirationTime)
+            Cookies.set('user', user.email, expirationTime)
 
             dispatch({
                 type: 'LOGIN',
@@ -18,19 +19,24 @@ export const login = (email, password) => {
             })
 
         }).catch(function(error) {
-            // Some error occurred, you can inspect the code: error.code
-            console.log(error)
-            // Common errors could be invalid email and invalid or expired OTPs.
-
+            dispatch({
+                type: 'ERROR_ALARM',
+                error
+            })
         });
     }
 }
 
 export const logout = () => {
     return function (dispatch) {
-        Cookies.remove('token');
-        dispatch({
-            type: 'LOGOUt',
-        })
+        app.auth().signOut().then(() => {
+            Cookies.remove('token');
+            Cookies.remove('user');
+            dispatch({
+                type: 'LOGOUt',
+            })
+        }).catch((error) => {
+            console.log(error)
+        });
     }
 }

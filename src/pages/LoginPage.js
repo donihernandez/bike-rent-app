@@ -1,22 +1,41 @@
 import React, {useState} from 'react';
-import { Link, useHistory  } from "react-router-dom";
-import {useDispatch} from "react-redux";
+import {Link, Redirect, useHistory} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
 import {ArrowLeftIcon} from "@heroicons/react/outline";
 import {login} from "../store/actions/authAction";
+import {cleanError} from "../store/actions/errorAction";
+import Swal from 'sweetalert2'
 
 export default function LoginPage() {
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
-
-    let history = useHistory();
+    const [ redirect, setRedirect ] = useState(false);
+    const error = useSelector(state => state.errorReducer.error);
 
     const dispatch = useDispatch();
     const loginUser = (email, password) => dispatch(login(email, password));
+    const clean = () => dispatch(cleanError());
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        loginUser(email, password);
-        return history.goBack();
+        await loginUser(email, password);
+
+        if (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error.message,
+            })
+
+            clean();
+        } else {
+           clean();
+           setRedirect(true);
+        }
+    }
+
+    if (redirect) {
+        return <Redirect to='/' />
     }
 
     return (

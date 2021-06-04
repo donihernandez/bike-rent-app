@@ -1,10 +1,10 @@
 import React from 'react';
 import { Route,Redirect } from 'react-router-dom';
 import Layout from "../layout/Layout";
-import {useSelector} from "react-redux";
+import Cookies from 'js-cookie';
 
 export default function ProtectedRouteComponent({ component: Component, ...rest }) {
-    const isAuthenticated = useSelector(state => state.userReducer.token);
+    const isAuthenticated = Cookies.get('token');
 
     return (
         <Route { ...rest } render={(props) => (

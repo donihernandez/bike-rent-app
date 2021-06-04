@@ -1,29 +1,50 @@
 import React, {useState} from 'react';
-import {Link, useHistory} from "react-router-dom";
+import {Link, Redirect, useHistory} from "react-router-dom";
 import { app } from '../config/firebase';
 import 'firebase/auth';
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { login } from "../store/actions/authAction";
+import Swal from "sweetalert2";
+import {cleanError} from "../store/actions/errorAction";
 
 export default function RegisterPage() {
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
+    const [ redirect, setRedirect ] = useState(false);
+    const error = useSelector(state => state.errorReducer.error);
 
-    let history = useHistory();
     const dispatch = useDispatch();
     const loginUser = (email, password) => dispatch(login(email, password));
+    const clean = () => dispatch(cleanError());
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        app.auth().createUserWithEmailAndPassword(email, password).then((res) => {
-            loginUser(email, password);
-            return history.goBack();
-        }).catch(function(error) {
-            // Some error occurred, you can inspect the code: error.code
-            console.log(error)
-            // Common errors could be invalid email and invalid or expired OTPs.
+        app.auth().createUserWithEmailAndPassword(email, password).then( async (res) => {
+           const message = await loginUser(email, password);
 
+            if (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error.message,
+                })
+
+                clean();
+            } else {
+                clean();
+                setRedirect(true);
+            }
+        }).catch(function(error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error.message,
+            })
         });
+    }
+
+    if (redirect) {
+        return <Redirect to='/' />
     }
 
     return (

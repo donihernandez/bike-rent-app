@@ -17,7 +17,7 @@ export default function Routes() {
         <Suspense fallback={ <LoaderComponent /> }>
             <Router history={ createBrowserHistory() }>
                 <Switch>
-                    <ProtectedRouteComponent path="/" exact component={ HomePage }/>
+                    <Route path="/" exact component={ HomePage }/>
                     <Route path="/login" exact component={ LoginPage }/>
                     <Route path="/register" exact component={ RegisterPage }/>
                     <ProtectedRouteComponent path="/rent" exact component={ RentABikePage }/>
