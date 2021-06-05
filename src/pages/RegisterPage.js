@@ -13,6 +13,9 @@ export default function RegisterPage() {
     const [ redirect, setRedirect ] = useState(false);
     const error = useSelector(state => state.errorReducer.error);
 
+    const from = '8:00';
+    const until = '20:00';
+
     const dispatch = useDispatch();
     const loginUser = (email, password) => dispatch(login(email, password));
     const clean = () => dispatch(cleanError());
@@ -20,7 +23,7 @@ export default function RegisterPage() {
     const handleSubmit = (e) => {
         e.preventDefault();
         app.auth().createUserWithEmailAndPassword(email, password).then( async (res) => {
-           const message = await loginUser(email, password);
+           await loginUser(email, password);
 
             if (error) {
                 Swal.fire({

@@ -12,6 +12,9 @@ export default function LoginPage() {
     const [ redirect, setRedirect ] = useState(false);
     const error = useSelector(state => state.errorReducer.error);
 
+    const from = '8:00';
+    const until = '20:00';
+
     const dispatch = useDispatch();
     const loginUser = (email, password) => dispatch(login(email, password));
     const clean = () => dispatch(cleanError());

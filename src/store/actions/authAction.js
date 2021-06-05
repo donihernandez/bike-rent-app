@@ -14,7 +14,6 @@ export const login = (email, password) => {
 
             dispatch({
                 type: 'LOGIN',
-                user,
                 token
             })
 
