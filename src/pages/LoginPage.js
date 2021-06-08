@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Link, Redirect, useHistory} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {ArrowLeftIcon} from "@heroicons/react/outline";
 import {login} from "../store/actions/authAction";
@@ -9,8 +9,9 @@ import Swal from 'sweetalert2'
 export default function LoginPage() {
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
-    const [ redirect, setRedirect ] = useState(false);
     const error = useSelector(state => state.errorReducer.error);
+
+    let history = useHistory();
 
     const from = '8:00';
     const until = '20:00';
@@ -33,12 +34,8 @@ export default function LoginPage() {
             clean();
         } else {
            clean();
-           setRedirect(true);
+           history.goBack();
         }
-    }
-
-    if (redirect) {
-        return <Redirect to='/' />
     }
 
     return (

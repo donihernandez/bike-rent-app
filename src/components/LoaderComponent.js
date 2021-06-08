@@ -1,8 +1,12 @@
-import React from 'react';
-import {RefreshIcon} from "@heroicons/react/outline";
+import { css } from "@emotion/react";
+import {PacmanLoader} from "react-spinners";
+
 
 export default function LoaderComponent() {
     return (
-       <RefreshIcon />
+        <div className="sweet-loading">
+            <PacmanLoader  size={150} />
+        </div>
     );
+
 }

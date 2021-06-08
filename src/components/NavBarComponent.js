@@ -1,5 +1,5 @@
 import React, {useRef, Fragment, useState, useEffect} from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { MenuAlt1Icon, XCircleIcon } from "@heroicons/react/outline";
 import {useDispatch} from "react-redux";
 import { logout } from '../store/actions/authAction';
@@ -9,8 +9,9 @@ export default function NavBarComponent() {
 
     const [token, setToken] = useState('');
     const navMenu = useRef(null)
-    const [ redirect, setRedirect ] = useState(false);
 
+    let history = useHistory();
+    
     const dispatch = useDispatch();
     const logoutAction = () => dispatch(logout());
 
@@ -28,13 +29,9 @@ export default function NavBarComponent() {
         navMenu.current.style.left = '-100%'
     }
 
-    const logoutUser = () => {
-        logoutAction();
-        setRedirect(true)
-    }
-
-    if (redirect) {
-       return <Redirect to="/" />
+    const logoutUser = async () => {
+        await logoutAction();
+        history.push('/');
     }
 
     return (

@@ -104,6 +104,11 @@ export default function RentPage() {
                                 if (item.riders > 0) {
                                     item.selectedBy.push(user.email);
                                     item.riders -= 1;
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Congratulations!',
+                                        text: 'You have reserved a rider!',
+                                    })
                                 } else if (item.riders === 0 && !item.availability) {
                                     setShowAlert(true);
                                 }

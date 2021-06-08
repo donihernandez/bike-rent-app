@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Link, Redirect, useHistory} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import { app } from '../config/firebase';
 import 'firebase/auth';
 import {useDispatch, useSelector} from "react-redux";
@@ -10,8 +10,9 @@ import {cleanError} from "../store/actions/errorAction";
 export default function RegisterPage() {
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
-    const [ redirect, setRedirect ] = useState(false);
     const error = useSelector(state => state.errorReducer.error);
+
+    let history = useHistory();
 
     const from = '8:00';
     const until = '20:00';
@@ -35,7 +36,7 @@ export default function RegisterPage() {
                 clean();
             } else {
                 clean();
-                setRedirect(true);
+                history.goBack();
             }
         }).catch(function(error) {
             Swal.fire({
@@ -44,10 +45,6 @@ export default function RegisterPage() {
                 text: error.message,
             })
         });
-    }
-
-    if (redirect) {
-        return <Redirect to='/' />
     }
 
     return (
