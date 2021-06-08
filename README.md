@@ -2,7 +2,7 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-##Description
+## Description
 RentURide is a motorcycle rental agency. They provide 8 riders every half hour and
 you as customer can hire one per half hour. Enjoy the app.
 
@@ -12,7 +12,7 @@ The stack used to create this project was:
 - React Framework
 - Firebase
 
-##Steps to install 
+## Steps to install 
 - Clone the project from GitHub
 - Install the dependencies   
 - Create a new project in Firebase
