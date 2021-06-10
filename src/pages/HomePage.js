@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import Motorcycle from '../static/images/Motorcycle.png'
 import Rider from '../static/images/Motorcycle Rider.H03.2k-min.png'
 import {NavLink} from "react-router-dom";
@@ -9,7 +9,7 @@ export default function HomePage() {
         <Layout>
             <section className="h-screen bg-gray-800 text-white p-10 flex flex-col md:flex-row justify-center items-center">
                 <div className="md:w-1/2 md:pl-6 md:pr-4">
-                    <h1 className="text-6xl md:text-7xl font-bold pt-0 pb-8">Rent your <span className="text-red-500">Ride</span></h1>
+                    <h1 data-testId="header" className="text-6xl md:text-7xl font-bold pt-0 pb-8">Rent your <span className="text-red-500">Ride</span></h1>
                     <p className="text-justify mb-10">
                         Get the journey of your life, get a bike, get your ride. We're the best motorcycle providers of the entire country.
                     </p>
