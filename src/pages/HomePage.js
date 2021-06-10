@@ -3,6 +3,7 @@ import Motorcycle from '../static/images/Motorcycle.png'
 import Rider from '../static/images/Motorcycle Rider.H03.2k-min.png'
 import {NavLink} from "react-router-dom";
 import Layout from "../layout/Layout";
+import {LazyLoadImage} from "react-lazy-load-image-component/src";
 
 export default function HomePage() {
     return (
@@ -18,12 +19,20 @@ export default function HomePage() {
                     </NavLink>
                 </div>
                 <div className="hidden md:flex md:w-1/2">
-                    <img className="object-contain w-full" src={Motorcycle} alt="Motorcycle" />
+                    <LazyLoadImage
+                        className="object-contain w-full"
+                        alt="Motorcycle"
+                        effect="blur"
+                        src={Motorcycle} />
                 </div>
             </section>
             <section className="h-screen bg-white p-10 flex flex-col md:flex-row justify-center items-center">
                 <div className="hidden md:flex md:w-1/2">
-                    <img className="object-contain w-full" src={Rider} alt="Rider" />
+                    <LazyLoadImage
+                        className="object-contain w-full"
+                        alt="Rider"
+                        effect="blur"
+                        src={Rider} />
                 </div>
                 <div className="md:w-1/2 md:pl-6 md:pr-4">
                     <h2 className="text-6xl md:text-7xl pt-0 pb-8 font-bold">Our Riders</h2>
