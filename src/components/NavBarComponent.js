@@ -1,25 +1,26 @@
 import React, {useRef, Fragment, useState, useEffect} from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
 import { MenuAlt1Icon, XCircleIcon } from "@heroicons/react/outline";
 import {useDispatch} from "react-redux";
 import { logout } from '../store/actions/authAction';
-import Cookies from 'js-cookie';
+import { app } from '../config/firebase';
+import 'firebase/auth';
 
 export default function NavBarComponent() {
 
-    const [token, setToken] = useState('');
+    const [user, setUser] = useState('');
     const navMenu = useRef(null)
 
-    let history = useHistory();
+    const [redirect, setRedirect] = useState(false);
     
     const dispatch = useDispatch();
     const logoutAction = () => dispatch(logout());
 
-    useEffect(() => {
-        if (token === '') {
-            setToken(Cookies.get('token'));
-        }
-    }, [token])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useEffect(async () => {
+        const logged = await app.auth().currentUser
+        setUser(logged);
+    }, [])
 
     const showMenu = () => {
         navMenu.current.style.left = '0'
@@ -31,7 +32,11 @@ export default function NavBarComponent() {
 
     const logoutUser = async () => {
         await logoutAction();
-        history.push('/');
+        setRedirect(true);
+    }
+
+    if(redirect) {
+        return <Redirect to="/"/>
     }
 
     return (
@@ -51,14 +56,14 @@ export default function NavBarComponent() {
                         <Link to="/rent">Rent</Link>
                     </li>
                     {
-                        !token ? <Fragment>
+                        !user ? <>
                                 <li className="uppercase hover:text-green-500 transition ease-out duration-200 delay-200 text-1xl font-bold">
                                     <Link to="/login">Login</Link>
                                 </li>
                                 <li className="uppercase bg-green-500 hover:bg-green-700 cursor-pointer p-3 rounded-lg transition ease-out duration-200 delay-200 text-1xl font-bold">
                                     <Link to="/register">Register</Link>
                                 </li>
-                            </Fragment> :
+                            </> :
                             <li onClick={logoutUser} className="uppercase hover:text-green-500  cursor-pointer transition ease-out duration-200 delay-200 text-1xl font-bold">
                                Logout
                             </li>
@@ -78,14 +83,14 @@ export default function NavBarComponent() {
                             <Link to="/rent">Rent</Link>
                         </li>
                         {
-                            !token ? <Fragment>
+                            !user ? <>
                                     <li className="mt-6 mb-10 hover:text-green-500 transition-all ease-out duration-200 delay-300" onClick={hideMenu}>
                                         <Link to="/login">Login</Link>
                                     </li>
                                     <li className="mt-6 mb-10 hover:bg-green-700 bg-green-500 p-3 rounded-lg transition-all ease-out duration-200 delay-300" onClick={hideMenu}>
                                         <Link to="/register">Register</Link>
                                     </li>
-                                </Fragment> :
+                                </> :
                                 <li onClick={logoutUser} className="mt-6 cursor-pointer mb-10 hover:text-green-500 transition-all ease-out duration-200 delay-300">
                                     Logout
                                 </li>

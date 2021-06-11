@@ -1,24 +1,22 @@
-import React, {useState} from 'react';
-import {Link, useHistory} from "react-router-dom";
+import React, {useEffect, useState} from 'react';
+import {Link, Redirect, useHistory} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {ArrowLeftIcon} from "@heroicons/react/outline";
 import {login} from "../store/actions/authAction";
 import {cleanError} from "../store/actions/errorAction";
 import Swal from 'sweetalert2'
+import {app} from "../config/firebase";
 
 export default function LoginPage() {
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const error = useSelector(state => state.errorReducer.error);
-
-    let history = useHistory();
-
-    const from = '8:00';
-    const until = '20:00';
+    const [redirect, setRedirect] = useState(false);
 
     const dispatch = useDispatch();
     const loginUser = (email, password) => dispatch(login(email, password));
     const clean = () => dispatch(cleanError());
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -33,9 +31,13 @@ export default function LoginPage() {
 
             clean();
         } else {
-           clean();
-           history.goBack();
+            clean();
+            setRedirect(true);
         }
+    }
+
+    if(redirect) {
+        return <Redirect to="/"/>
     }
 
     return (
